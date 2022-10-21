@@ -30,6 +30,8 @@ namespace Buildalyzer
         private string _command;
         private string[] _compilerArguments;
         private string _compilerFilePath;
+        private List<(ProcessedCommandLine ProcessedCommandLine, bool CoreCompile)> _cscProcessedCommandLines =
+            new List<(ProcessedCommandLine ProcessedCommandLine, bool CoreCompile)>();
 
         internal AnalyzerResult(string projectFilePath, AnalyzerManager manager, ProjectAnalyzer analyzer)
         {
@@ -182,18 +184,19 @@ namespace Buildalyzer
             }
 
             ProcessedCommandLine cmd = ProcessCscCommandLine(commandLine);
+            _cscProcessedCommandLines.Add((cmd, coreCompile));
 
-            // Some projects can have multiple Csc calls (see #92) so if this is the one inside CoreCompile use it, otherwise use the first
-            if (coreCompile || _cscCommandLineArguments == null)
+            // This was an attempt at keeping the fix generic but on running Buildalyzers tests a different kind of project fails.
+            // for Azure function apps this method will get hit twice with coreCompile true in both we want only the first one.
+
+            if (_cscProcessedCommandLines.Count == 1 ||
+                (coreCompile && !_cscProcessedCommandLines.Any(x => x.CoreCompile)))
             {
                 _command = cmd.Command;
                 _compilerFilePath = cmd.FileName;
                 _compilerArguments = cmd.Arguments.ToArray();
+                _cscCommandLineArguments = cmd.ProcessedArguments;
             }
-
-            // Azure function app projects have multiple Csc calls all of which are marked as coreCompile, so aggregate the ProcessedArguments.
-            _cscCommandLineArguments ??= new List<(string, string)>();
-            _cscCommandLineArguments.AddRange(cmd.ProcessedArguments);
         }
 
         internal static ProcessedCommandLine ProcessCscCommandLine(string commandLine)
