@@ -77,6 +77,7 @@ namespace Buildalyzer.Tests
         [TestCase("foo.cs", "bar.cs", new[] { "foo.cs" })]
         [TestCase("foo.cs otherFile.cs", "bar.cs", new[] { "foo.cs", "otherFile.cs" })]
         [TestCase("foo.cs", "bar.cs otherFile.cs", new[] { "foo.cs" })]
+        [SuppressMessage("CA1062", "CA1062:Validate arguments of public methods", Justification = "Test")]
         public void MultipleCscCoreCompileCommandsTakeFirst(string firstInput, string secondInput, string[] sourceFiles)
         {
             // Given
