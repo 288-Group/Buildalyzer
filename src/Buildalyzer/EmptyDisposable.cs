@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Buildalyzer
+namespace Buildalyzer;
+
+[Obsolete("Will be dropped in the next major version.")]
+public class EmptyDisposable : IDisposable
 {
-    public class EmptyDisposable : IDisposable
+    public void Dispose()
     {
-        public void Dispose()
-        {
-        }
     }
 }

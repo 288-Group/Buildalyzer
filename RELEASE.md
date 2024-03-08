@@ -1,3 +1,32 @@
+# 6.0.4
+
+- Restored the original sort order of projects to keep the empty target framework last (#242, thanks @0xced).
+
+# 6.0.3
+
+- Ensured Roslyn workspaces get project references added from projects (#241, thanks @AndreasKim).
+
+# 6.0.2
+
+- Changed how projects are added to the `Workspace` in Buildalyzer.Workspaces to be based on the Solution order, if there is a Solution (#241, thanks @AndreasKim).
+- Increased the default timeout for `dotnet --info` calls from 4 seconds to 10 seconds (#228). 
+
+# 6.0.1
+
+- Added the ability to specify an alternate working directory for running the build in the environment options (#233).
+- Removed the dependency on NuGet.Frameworks due to some binding issues (#240).
+
+# 6.0.0
+
+- Updates Microsoft.Build to 17.0.1, along with some other dependency updates (#234, thanks @pentp).
+- Ensures paths being passed to Roslyn in Buildalyzer.Workspaces are absolute (#232, thanks @tjchester).
+- Support for nullable context options in Buildalyzer.Workspaces (#235, thanks @Corniel).
+- Added a `DOTNET_INFO_WAIT_TIME` environment variable that can be used to specify an alternate amount of time to wait for `dotnet --info` to complete when getting local SDK information (#236, thanks @phmonte).
+
+# 5.0.1
+
+- Added support for additional files on `GetWorkspace()` (#231, thanks @Corniel).
+
 # 5.0.0
 
 - Updating Buildalyzer to target .NET 6 (#221, thanks @colombod).
